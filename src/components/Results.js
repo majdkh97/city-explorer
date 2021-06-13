@@ -8,9 +8,9 @@ export class Results extends Component {
     render() {
         return (
             <div>
-                <Container>
-                    <Card style={{ width: '18rem' }}>
-                        <Card.Img variant="top" src="holder.js/100px180?text=Image cap" />
+                <Container style={{display: "flex", justifyContent: "center", marginTop: "20px"}} >
+                    <Card style={{ width: '18rem', color:"white", backgroundColor:"blue" }}>
+                        <Card.Img variant="top" src={`https://maps.locationiq.com/v3/staticmap?key=pk.d36871f015649f915282f374cff76628&q&center=${this.props.cityData.lat},${this.props.cityData.lon}&zoom=15`} alt=""/>
                         <Card.Body>
                             <Card.Title>{this.props.cityData.display_name}</Card.Title>
                         </Card.Body>

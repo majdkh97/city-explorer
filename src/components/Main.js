@@ -40,6 +40,7 @@ export class Main extends Component {
                     setCityName={this.setCityName}
                     getCityData={this.getCityData}
                 />
+                <br/>
                 {
                     this.state.showData && 
                     <Results
