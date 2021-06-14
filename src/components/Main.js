@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import CityForm from './CityForm';
 import Results from './Results';
 import axios from 'axios';
+import ErrorMessage from './ErrorMessage';
 
 
 export class Main extends Component {
@@ -11,7 +12,9 @@ export class Main extends Component {
         this.state = {
             cityName: '',
             cityData: {},
-            showData: false
+            showData: false,
+            showError: false,
+            errorMessage: {}
         }
     }
 
@@ -23,14 +26,30 @@ export class Main extends Component {
     }
 
     getCityData = async (e) => {
-        e.preventDefault();
-        const data = await axios.get(`https://us1.locationiq.com/v1/search.php?key=pk.72adfb8d37124217c7db6a146b11c566&city=${this.state.cityName}&format=json`);
-        console.log(data);
+        try {
+            e.preventDefault();
+            const data = await axios.get(`https://us1.locationiq.com/v1/search.php?key=pk.72adfb8d37124217c7db6a146b11c566&city=${this.state.cityName}&format=json`);
+            console.log(data);
+            this.setState({
+                cityData: data.data[0],
+                showData: true,
+                showError:false
+            });
+            console.log(this.state.cityData);
+
+        } catch (error) {
+            this.setState({
+                showError: true,
+                errorMessage: error.message
+            })
+        }
+
+    }
+
+    setShowError = () => {
         this.setState({
-            cityData: data.data[0],
-            showData: true
-        });
-        console.log(this.state.cityData);
+            showError: false
+        })
     }
 
     render() {
@@ -40,11 +59,18 @@ export class Main extends Component {
                     setCityName={this.setCityName}
                     getCityData={this.getCityData}
                 />
-                <br/>
+                <br />
                 {
-                    this.state.showData && 
+                    this.state.showData &&
                     <Results
                         cityData={this.state.cityData}
+                    />
+                }
+                {
+                    this.state.showError &&
+                    <ErrorMessage
+                        showError={this.state.showError}
+                        errorMessage={this.state.errorMessage}
                     />
                 }
             </div>
